@@ -1,0 +1,47 @@
+{
+  "transcript_id": "T005",
+  "account_name": "StackForge",
+  "date": "2026-03-18",
+  "messages": [
+    {
+      "speaker": "Jane Park",
+      "timestamp": "00:00:10",
+      "text": "Sam, let's dig into the pricing discussion. You mentioned a 20% discount request."
+    },
+    {
+      "speaker": "Sam White",
+      "timestamp": "00:00:25",
+      "text": "Right. We love the product \u2014 our engineers are very happy with it. But financially, we're comparing to open-source."
+    },
+    {
+      "speaker": "Jane Park",
+      "timestamp": "00:00:50",
+      "text": "Open-source doesn't come with SLA, support, or the managed infrastructure we provide."
+    },
+    {
+      "speaker": "Sam White",
+      "timestamp": "00:01:10",
+      "text": "True, but our CTO estimates we can get 80% of the functionality from the open-source version."
+    },
+    {
+      "speaker": "Jane Park",
+      "timestamp": "00:01:30",
+      "text": "That last 20% is usually where the production reliability lives. Let me build a comparison doc."
+    },
+    {
+      "speaker": "Sam White",
+      "timestamp": "00:01:50",
+      "text": "Also, ToolCraft reached out. They're offering similar functionality at about 30% less."
+    },
+    {
+      "speaker": "Jane Park",
+      "timestamp": "00:02:10",
+      "text": "ToolCraft doesn't have our observability features. What if we bundled training and priority support?"
+    },
+    {
+      "speaker": "Sam White",
+      "timestamp": "00:02:30",
+      "text": "That could work. But I need at least a 10% discount to take back to procurement."
+    }
+  ]
+}

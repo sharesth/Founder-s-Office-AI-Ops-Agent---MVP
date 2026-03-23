@@ -1,0 +1,47 @@
+{
+  "transcript_id": "T003",
+  "account_name": "JetStream",
+  "date": "2026-03-20",
+  "messages": [
+    {
+      "speaker": "Jane Park",
+      "timestamp": "00:00:10",
+      "text": "Jack, I wanted to touch base on the escalations your team has raised."
+    },
+    {
+      "speaker": "Jack Turner",
+      "timestamp": "00:00:25",
+      "text": "Thanks, Jane. We've had 12 tickets open this quarter, and some have been sitting for weeks."
+    },
+    {
+      "speaker": "Jane Park",
+      "timestamp": "00:00:45",
+      "text": "I see that. We're assigning a dedicated engineer to handle your account going forward."
+    },
+    {
+      "speaker": "Jack Turner",
+      "timestamp": "00:01:05",
+      "text": "That helps. But our renewal is in 30 days and frankly, my leadership is questioning the investment."
+    },
+    {
+      "speaker": "Jane Park",
+      "timestamp": "00:01:25",
+      "text": "Completely understand. What would it take to restore confidence?"
+    },
+    {
+      "speaker": "Jack Turner",
+      "timestamp": "00:01:45",
+      "text": "Pricing adjustment would be a start. We've seen competitor offers from RivalCo that are 25% less."
+    },
+    {
+      "speaker": "Jane Park",
+      "timestamp": "00:02:05",
+      "text": "Let me take that back to our team and come back with a retention offer."
+    },
+    {
+      "speaker": "Jack Turner",
+      "timestamp": "00:02:20",
+      "text": "Also, the onboarding for our new modules is behind. That's affecting our go-live timeline."
+    }
+  ]
+}

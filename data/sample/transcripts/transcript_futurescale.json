@@ -1,0 +1,47 @@
+{
+  "transcript_id": "T002",
+  "account_name": "FutureScale",
+  "date": "2026-03-21",
+  "messages": [
+    {
+      "speaker": "Sarah Lee",
+      "timestamp": "00:00:10",
+      "text": "Frank, thanks for making time. How's the team finding the platform?"
+    },
+    {
+      "speaker": "Frank Wilson",
+      "timestamp": "00:00:25",
+      "text": "Honestly, adoption has been slower than we expected. Only about a third of our team uses it regularly."
+    },
+    {
+      "speaker": "Sarah Lee",
+      "timestamp": "00:00:50",
+      "text": "That's concerning. What's driving the low adoption?"
+    },
+    {
+      "speaker": "Frank Wilson",
+      "timestamp": "00:01:10",
+      "text": "The new dashboard features aren't intuitive. We've had to do a lot of internal training."
+    },
+    {
+      "speaker": "Sarah Lee",
+      "timestamp": "00:01:30",
+      "text": "We can definitely help with that. Would product training sessions help?"
+    },
+    {
+      "speaker": "Frank Wilson",
+      "timestamp": "00:01:50",
+      "text": "Maybe, but I'll be honest \u2014 we've started looking at RivalCo. Their UX is more straightforward."
+    },
+    {
+      "speaker": "Sarah Lee",
+      "timestamp": "00:02:15",
+      "text": "I appreciate the candour. Let me put together an ROI analysis and schedule training."
+    },
+    {
+      "speaker": "Frank Wilson",
+      "timestamp": "00:02:35",
+      "text": "Sure, but pricing is also a factor. We're not seeing the ROI we expected for what we're paying."
+    }
+  ]
+}

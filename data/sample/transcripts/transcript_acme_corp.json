@@ -1,0 +1,47 @@
+{
+  "transcript_id": "T001",
+  "account_name": "Acme Corp",
+  "date": "2026-03-22",
+  "messages": [
+    {
+      "speaker": "Sarah Lee",
+      "timestamp": "00:00:15",
+      "text": "Thanks for joining, Alice. Let's review where we are on the enterprise plan evaluation."
+    },
+    {
+      "speaker": "Alice Johnson",
+      "timestamp": "00:00:30",
+      "text": "Sure. We've narrowed it down to you and CompetitorX. The main differentiator right now is pricing."
+    },
+    {
+      "speaker": "Sarah Lee",
+      "timestamp": "00:01:00",
+      "text": "Understood. Can you share more about the pricing concern?"
+    },
+    {
+      "speaker": "Alice Johnson",
+      "timestamp": "00:01:15",
+      "text": "CompetitorX is offering us per-seat pricing that's about 15% lower. On 200 seats, that adds up."
+    },
+    {
+      "speaker": "Sarah Lee",
+      "timestamp": "00:01:45",
+      "text": "That's fair. We do provide additional value though \u2014 dedicated support, SLA guarantees, and the API layer."
+    },
+    {
+      "speaker": "Alice Johnson",
+      "timestamp": "00:02:10",
+      "text": "True, but our VP of Engineering wants to see better API documentation before committing."
+    },
+    {
+      "speaker": "Sarah Lee",
+      "timestamp": "00:02:30",
+      "text": "I'll have our technical writer send over the updated docs by Friday."
+    },
+    {
+      "speaker": "Alice Johnson",
+      "timestamp": "00:02:45",
+      "text": "That would help. Also, any chance of a Salesforce native connector? Right now it's Zapier only."
+    }
+  ]
+}

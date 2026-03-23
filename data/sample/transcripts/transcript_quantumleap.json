@@ -1,0 +1,47 @@
+{
+  "transcript_id": "T004",
+  "account_name": "QuantumLeap",
+  "date": "2026-03-19",
+  "messages": [
+    {
+      "speaker": "Mike Chen",
+      "timestamp": "00:00:10",
+      "text": "Quinn, exciting to discuss the multi-year engagement. Your CTO seemed very positive last week."
+    },
+    {
+      "speaker": "Quinn Roberts",
+      "timestamp": "00:00:30",
+      "text": "She is. But we need to address pricing before we can get budget approval for a 3-year commitment."
+    },
+    {
+      "speaker": "Mike Chen",
+      "timestamp": "00:00:55",
+      "text": "What pricing structure works best for your team?"
+    },
+    {
+      "speaker": "Quinn Roberts",
+      "timestamp": "00:01:15",
+      "text": "We'd like a volume discount. At 500+ seats, per-seat pricing needs to come down."
+    },
+    {
+      "speaker": "Mike Chen",
+      "timestamp": "00:01:35",
+      "text": "We can definitely explore tiered pricing. What's the competitor landscape look like for you?"
+    },
+    {
+      "speaker": "Quinn Roberts",
+      "timestamp": "00:01:55",
+      "text": "We've been approached by MegaSuite. Their enterprise offering is aggressive on pricing."
+    },
+    {
+      "speaker": "Mike Chen",
+      "timestamp": "00:02:15",
+      "text": "MegaSuite has a different architecture that doesn't scale the same way. Let me put together a TCO comparison."
+    },
+    {
+      "speaker": "Quinn Roberts",
+      "timestamp": "00:02:35",
+      "text": "That would be great. Also send the executive summary deck \u2014 I need to present to the board next week."
+    }
+  ]
+}
