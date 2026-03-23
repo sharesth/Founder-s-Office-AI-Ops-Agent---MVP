@@ -2,7 +2,7 @@
 Hybrid Retrieval Service – combines SQL queries with FAISS vector search.
 
 Embeddings are generated via the NEW google-genai SDK (v1.0+) using
-model text-embedding-004 — NO local torch/sentence-transformers needed.
+model gemini-embedding-001 — NO local torch/sentence-transformers needed.
 
 • SQL layer  → structured metrics from the `deals`, `meeting_notes`, `transcripts` tables.
 • FAISS layer → semantic similarity search over ingested text chunks.
@@ -28,7 +28,7 @@ _faiss = None
 _index = None
 _doc_store: list[dict] = []  # parallel list: {id, text, source, account}
 
-EMBEDDING_MODEL = "text-embedding-004"
+EMBEDDING_MODEL = "gemini-embedding-001"
 
 
 def _load_faiss():
@@ -42,22 +42,21 @@ _embed_client = None
 
 
 def _get_embed_client():
-    """Lazy-init a google.genai.Client pinned to API v1 (where text-embedding-004 lives)."""
+    """Lazy-init a google.genai.Client for embedding calls."""
     global _embed_client
     if _embed_client is None:
         from google import genai
         _embed_client = genai.Client(
             api_key=settings.google_api_key,
-            http_options={"api_version": "v1"},
         )
     return _embed_client
 
 
 def _get_embedding(text: str) -> np.ndarray:
-    """Embed a single text string via Gemini API v1."""
+    """Embed a single text string via Gemini API."""
     client = _get_embed_client()
     result = client.models.embed_content(
-        model="text-embedding-004",
+        model=EMBEDDING_MODEL,
         contents=text,
     )
     vec = result.embeddings[0].values
@@ -65,7 +64,7 @@ def _get_embedding(text: str) -> np.ndarray:
 
 
 def _get_embeddings_batch(texts: list[str]) -> np.ndarray:
-    """Embed a batch of texts via Gemini API v1."""
+    """Embed a batch of texts via Gemini API."""
     client = _get_embed_client()
     all_vecs = []
     # Process in batches of 20 to avoid API limits
@@ -74,7 +73,7 @@ def _get_embeddings_batch(texts: list[str]) -> np.ndarray:
         batch = texts[i:i + batch_size]
         for text in batch:
             result = client.models.embed_content(
-                model="text-embedding-004",
+                model=EMBEDDING_MODEL,
                 contents=text,
             )
             all_vecs.append(result.embeddings[0].values)

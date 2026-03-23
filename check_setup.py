@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Quick smoke-test: verifies your Google API key works for BOTH
-text generation (Gemini) and embeddings (text-embedding-004).
+text generation (Gemini) and embeddings (gemini-embedding-001).
 
 Uses the NEW google-genai SDK (v1.0+): `from google import genai`
 
@@ -46,9 +46,9 @@ def check_text_generation():
 
 
 def check_embeddings():
-    """Test Google embeddings with new SDK (text-embedding-004)."""
+    """Test Google embeddings with new SDK (gemini-embedding-001)."""
     print("=" * 50)
-    print("2️⃣  Testing EMBEDDINGS (text-embedding-004)...")
+    print("2️⃣  Testing EMBEDDINGS (gemini-embedding-001)...")
     print("=" * 50)
     try:
         from google import genai
@@ -56,15 +56,14 @@ def check_embeddings():
 
         client = genai.Client(
             api_key=settings.google_api_key,
-            http_options={"api_version": "v1"},
         )
 
         result = client.models.embed_content(
-            model="text-embedding-004",
+            model="gemini-embedding-001",
             contents="Hello, this is a test",
         )
         vec = result.embeddings[0].values
-        print(f"   Model: text-embedding-004")
+        print(f"   Model: gemini-embedding-001")
         print(f"   Vector dimension: {len(vec)}")
         print(f"   First 5 values: {vec[:5]}")
         print("   ✅ Embeddings are WORKING\n")
