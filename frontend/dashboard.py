@@ -35,7 +35,7 @@ from app.agents.orchestrator import ask_question, draft_email
 
 st.set_page_config(
     page_title="Founder's Office · AI Ops",
-    page_icon="🚀",
+    page_icon=None,
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -104,16 +104,16 @@ from app.db.models import Deal
 _deal_count = db.query(Deal).count()
 if _deal_count == 0:
     st.warning(
-        "⚠️ **Database is empty!** No deals found. "
+        "**Database is empty!** No deals found. "
         "Run `python seed_data.py` from the `founders_office_ai_ops/` directory first, "
         "then refresh this page."
     )
-    st.info(f"🗄️ DB URL: `{settings.database_url}`")
+    st.info(f"DB URL: `{settings.database_url}`")
 
 
 # ── Header ─────────────────────────────────────────────────
 
-st.markdown("# 🚀 Founder's Office · AI Ops Agent")
+st.markdown("# Founder's Office · AI Ops Agent")
 st.markdown("*Pipeline intelligence, churn detection, and AI-powered insights — all in one place.*")
 st.divider()
 
@@ -152,7 +152,7 @@ with col4:
     st.markdown(f"""
     <div class="kpi-card">
         <div class="kpi-value">{summary.stalled_count}</div>
-        <div class="kpi-label">⚠️ Stalled</div>
+        <div class="kpi-label">Stalled</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -160,7 +160,7 @@ with col5:
     st.markdown(f"""
     <div class="kpi-card">
         <div class="kpi-value">{summary.closing_without_next_step}</div>
-        <div class="kpi-label">🔴 No Next Step</div>
+        <div class="kpi-label">No Next Step</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -169,7 +169,7 @@ with col6:
     st.markdown(f"""
     <div class="kpi-card">
         <div class="kpi-value">{len(churn_risks)}</div>
-        <div class="kpi-label">🔥 Churn Risks</div>
+        <div class="kpi-label">Churn Risks</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -177,7 +177,7 @@ st.markdown("<br>", unsafe_allow_html=True)
 
 # ── Pipeline Blockers ─────────────────────────────────────
 
-st.markdown('<div class="section-header">🚧 Pipeline Blockers</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-header">Pipeline Blockers</div>', unsafe_allow_html=True)
 
 blockers = get_stalled_deals(db)
 
@@ -198,19 +198,19 @@ if blockers:
     df_blockers = pd.DataFrame(blocker_data)
     st.dataframe(df_blockers, use_container_width=True, hide_index=True)
 
-    with st.expander("📋 Blocker Evidence Details"):
+    with st.expander("Blocker Evidence Details"):
         for b in blockers:
             st.markdown(f"**{b.account_name.title()}** — {b.description}")
             for e in b.evidence:
                 st.markdown(f"  - *{e.source}*: `{e.snippet[:200]}`")
             st.markdown("---")
 else:
-    st.success("✅ No pipeline blockers detected!")
+    st.success("No pipeline blockers detected!")
 
 
 # ── Churn Watchlist ────────────────────────────────────────
 
-st.markdown('<div class="section-header">🔥 Churn Watchlist</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-header">Churn Watchlist</div>', unsafe_allow_html=True)
 
 if churn_risks:
     churn_data = []
@@ -227,21 +227,21 @@ if churn_risks:
     df_churn = pd.DataFrame(churn_data)
     st.dataframe(df_churn, use_container_width=True, hide_index=True)
 
-    with st.expander("📋 Churn Evidence Details"):
+    with st.expander("Churn Evidence Details"):
         for r in churn_risks:
             st.markdown(f"**{r.account_name.title()}** — Risk: {r.risk_level.value.upper()}")
             for e in r.evidence:
                 st.markdown(f"  - *{e.source}*: `{e.snippet[:200]}`")
             if r.recommended_action:
-                st.info(f"💡 **Recommended**: {r.recommended_action}")
+                st.info(f"**Recommended**: {r.recommended_action}")
             st.markdown("---")
 else:
-    st.success("✅ No churn risks detected!")
+    st.success("No churn risks detected!")
 
 
 # ── Action Items ───────────────────────────────────────────
 
-st.markdown('<div class="section-header">✅ Action Items</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-header">Action Items</div>', unsafe_allow_html=True)
 
 actions = extract_all_action_items(db)
 
@@ -265,7 +265,7 @@ else:
 
 # ── Deals by Stage (bar chart) ─────────────────────────────
 
-st.markdown('<div class="section-header">📊 Deals by Stage</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-header">Deals by Stage</div>', unsafe_allow_html=True)
 
 if summary.deals_by_stage:
     stage_df = pd.DataFrame(
@@ -277,14 +277,14 @@ if summary.deals_by_stage:
 
 # ── Sidebar: Email Drafter ─────────────────────────────────
 
-st.sidebar.markdown("## ✉️ Email Drafter")
+st.sidebar.markdown("## Email Drafter")
 
 with st.sidebar.form("email_form"):
     email_account = st.text_input("Account Name", placeholder="e.g. acme corp")
     email_to = st.text_input("Recipient Email", placeholder="alice@acme.com")
     email_purpose = st.text_area("Purpose", placeholder="Follow up on pricing discussion...")
     email_tone = st.selectbox("Tone", ["professional", "warm", "urgent"])
-    email_submit = st.form_submit_button("✨ Draft Email")
+    email_submit = st.form_submit_button("Draft Email")
 
 if email_submit and email_account and email_to:
     with st.sidebar:
@@ -301,11 +301,11 @@ if email_submit and email_account and email_to:
 # ── Sidebar: Ask the Agent ─────────────────────────────────
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("## 🤖 Ask the Agent")
+st.sidebar.markdown("## Ask the Agent")
 
 with st.sidebar.form("ask_form"):
     question = st.text_area("Your Question", placeholder="Which deals are at risk this week?")
-    ask_submit = st.form_submit_button("🔍 Ask")
+    ask_submit = st.form_submit_button("Ask")
 
 if ask_submit and question:
     with st.sidebar:
