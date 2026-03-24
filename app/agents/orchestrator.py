@@ -176,17 +176,32 @@ def _parse_json(raw: str) -> dict:
     try:
         return json.loads(text)
     except json.JSONDecodeError:
-        logger.warning("JSON parsing failed, attempting regex fallback for %s...", text[:50])
-        # Fallback: extract subject and body via regex if the JSON is truncated or missing quotes
+        logger.warning("JSON parsing failed, attempting robust recovery for %s...", text[:50])
         res = {}
-        # Match "field": "value" with support for unclosed quotes at the end
         for field in ["subject", "body"]:
-            # Robust regex to find the field and its value, even if terminal quotes are missing
-            match = re.search(f'"{field}"\s*:\s*"(.*?)(?:"|\Z)', text, re.DOTALL)
-            if match:
-                val = match.group(1).strip()
-                # If there's a trailing quote that the non-greedy match didn't catch, or if it ended early
-                res[field] = val.replace('\\n', '\n').strip()
+            field_pattern = f'"{field}"\s*:\s*"'
+            field_match = re.search(field_pattern, text)
+            if field_match:
+                start_idx = field_match.end()
+                content = ""
+                escaped = False
+                # Manual scan to handle escaped quotes correctly
+                for char in text[start_idx:]:
+                    if escaped:
+                        content += char
+                        escaped = False
+                    elif char == '\\':
+                        escaped = True
+                        # Don't add the backslash yet, let .replace('\\n') handle it in draft_email
+                        # Wait, we should add it if it's an escaped quote or something else.
+                        # Actually, keeping the backslash is safer as draft_email cleans it.
+                        content += char
+                    elif char == '"':
+                        break  # End of field value
+                    else:
+                        content += char
+                # Clean up escaped quotes and newlines in the recovered content
+                res[field] = content.replace('\\"', '"').replace('\\n', '\n').strip()
         
         return res
 
