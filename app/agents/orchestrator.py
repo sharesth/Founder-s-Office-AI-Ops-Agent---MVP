@@ -160,6 +160,25 @@ def _call_llm(system: str, user: str) -> str:
         })
 
 
+def _parse_json(raw: str) -> dict:
+    """Robustly parse JSON from LLM, stripping markdown code blocks if present."""
+    text = raw.strip()
+    if text.startswith("```"):
+        # Strip ```json and ```
+        lines = text.splitlines()
+        if lines[0].startswith("```"):
+            lines = lines[1:]
+        if lines and lines[-1].startswith("```"):
+            lines = lines[:-1]
+        text = "\n".join(lines).strip()
+    
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        logger.error("Failed to parse JSON from LLM: %s", raw[:200])
+        return {}
+
+
 # ── Public API ─────────────────────────────────────────────
 
 def ask_question(question: str, db: Session, account_name: Optional[str] = None) -> AskResponse:
@@ -171,9 +190,8 @@ def ask_question(question: str, db: Session, account_name: Optional[str] = None)
     prompt = QA_PROMPT.format(context=context_str, question=question)
     raw = _call_llm(SYSTEM_PROMPT, prompt)
 
-    try:
-        parsed = json.loads(raw)
-    except json.JSONDecodeError:
+    parsed = _parse_json(raw)
+    if not parsed:
         parsed = {"answer": raw, "evidence": []}
 
     evidence = [
@@ -185,7 +203,11 @@ def ask_question(question: str, db: Session, account_name: Optional[str] = None)
         for e in parsed.get("evidence", [])
     ]
 
-    return AskResponse(answer=parsed.get("answer", ""), evidence=evidence)
+    answer_text = parsed.get("answer", "")
+    if isinstance(answer_text, str):
+        answer_text = answer_text.replace("\\n", "\n")
+
+    return AskResponse(answer=answer_text, evidence=evidence)
 
 
 def draft_email(
@@ -209,10 +231,15 @@ def draft_email(
     )
     raw = _call_llm(SYSTEM_PROMPT, prompt)
 
-    try:
-        parsed = json.loads(raw)
-    except json.JSONDecodeError:
+    parsed = _parse_json(raw)
+    if not parsed:
         parsed = {"subject": "Follow Up", "body": raw, "evidence": []}
+    
+    body = parsed.get("body", "")
+    # Ensure literal \n from LLM are handled as actual newlines if they were escaped
+    if isinstance(body, str):
+        body = body.replace("\\n", "\n")
+
 
     evidence = [
         Evidence(
@@ -228,7 +255,7 @@ def draft_email(
         account_name=account_name,
         to=to,
         subject=parsed.get("subject", "Follow Up"),
-        body=parsed.get("body", ""),
+        body=body,
         tone=tone,
         evidence=evidence,
     )

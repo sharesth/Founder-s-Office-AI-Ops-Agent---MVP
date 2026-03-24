@@ -291,7 +291,7 @@ if email_submit and email_account and email_to:
         with st.spinner("Drafting email with AI..."):
             email_result = draft_email(email_account, email_to, email_purpose, db, tone=email_tone)
         st.markdown(f"**Subject**: {email_result.subject}")
-        st.text_area("Email Body", email_result.body, height=250)
+        st.text_area("Drafted Email (Ready to Copy)", email_result.body, height=350)
         if email_result.evidence:
             with st.expander("Evidence"):
                 for e in email_result.evidence:
