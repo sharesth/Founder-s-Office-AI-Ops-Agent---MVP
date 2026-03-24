@@ -24,6 +24,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 import streamlit as st
 import pandas as pd
 import requests
+import altair as alt
 
 from app.db.models import init_db, SessionLocal
 from app.tools.pipeline import get_pipeline_summary, get_stalled_deals
@@ -273,7 +274,27 @@ if summary.deals_by_stage:
         list(summary.deals_by_stage.items()),
         columns=["Stage", "Count"]
     )
-    st.bar_chart(stage_df.set_index("Stage"))
+    
+    # Use Altair for a more stable, fixed-height chart
+    chart = alt.Chart(stage_df).mark_bar(
+        color='#7b2ff7',
+        cornerRadiusTopLeft=4,
+        cornerRadiusTopRight=4,
+        size=40
+    ).encode(
+        x=alt.X('Stage:N', sort='-y', title=None, axis=alt.Axis(labelAngle=0)),
+        y=alt.Y('Count:Q', title=None, axis=alt.Axis(tickMinStep=1)),
+        tooltip=['Stage', 'Count']
+    ).properties(
+        height=300
+    ).configure_axis(
+        labelFontSize=11,
+        grid=False
+    ).configure_view(
+        strokeOpacity=0
+    )
+    
+    st.altair_chart(chart, use_container_width=True)
 
 
 # ── Sidebar: Email Drafter ─────────────────────────────────
