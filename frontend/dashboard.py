@@ -23,6 +23,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 import streamlit as st
 import pandas as pd
+import requests
 
 from app.db.models import init_db, SessionLocal
 from app.tools.pipeline import get_pipeline_summary, get_stalled_deals
@@ -317,6 +318,46 @@ if ask_submit and question:
             with st.expander("Evidence"):
                 for e in answer.evidence:
                     st.markdown(f"- *{e.source}*: {e.snippet[:150]}")
+
+
+# ── 3. Document Ingest ─────────────────────────────────────
+
+st.sidebar.markdown("---")
+st.sidebar.header("Ingest Documents")
+
+API_URL = "http://localhost:8000/api/v1"
+
+uploaded_file = st.sidebar.file_uploader(
+    "Upload Meeting Note or Transcript", 
+    type=["md", "txt", "json"],
+    help="Upload .md/.txt (meeting notes) or .json (transcripts) to add to the knowledge base."
+)
+
+if uploaded_file is not None:
+    if st.sidebar.button("Process & Ingest Content"):
+        with st.sidebar.spinner("Uploading and parsing..."):
+            try:
+                files = {"file": (uploaded_file.name, uploaded_file.getvalue(), uploaded_file.type)}
+                resp = requests.post(f"{API_URL}/ingest/upload", files=files)
+                if resp.status_code == 200:
+                    st.sidebar.success(f"Successfully ingested: {uploaded_file.name}")
+                    st.sidebar.info("Tip: Rebuild the index below to enable AI retrieval.")
+                else:
+                    st.sidebar.error(f"Ingest failed: {resp.text}")
+            except Exception as e:
+                st.sidebar.error(f"Error: {e}")
+
+if st.sidebar.button("Rebuild Vector Index"):
+    with st.sidebar.spinner("Rebuilding FAISS index..."):
+        try:
+            resp = requests.post(f"{API_URL}/ingest/build-index")
+            if resp.status_code == 200:
+                data = resp.json()
+                st.sidebar.success(f"Index rebuilt! {data.get('documents_indexed', 0)} docs indexed.")
+            else:
+                st.sidebar.error("Failed to rebuild index.")
+        except Exception as e:
+            st.sidebar.error(f"Error: {e}")
 
 
 # ── Cleanup ────────────────────────────────────────────────
