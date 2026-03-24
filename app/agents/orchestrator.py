@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 import uuid
 from datetime import datetime
 from typing import Optional
@@ -161,7 +162,7 @@ def _call_llm(system: str, user: str) -> str:
 
 
 def _parse_json(raw: str) -> dict:
-    """Robustly parse JSON from LLM, stripping markdown code blocks if present."""
+    """Robustly parse JSON from LLM, stripping markdown code blocks and providing regex fallback."""
     text = raw.strip()
     if text.startswith("```"):
         # Strip ```json and ```
@@ -175,8 +176,19 @@ def _parse_json(raw: str) -> dict:
     try:
         return json.loads(text)
     except json.JSONDecodeError:
-        logger.error("Failed to parse JSON from LLM: %s", raw[:200])
-        return {}
+        logger.warning("JSON parsing failed, attempting regex fallback for %s...", text[:50])
+        # Fallback: extract subject and body via regex if the JSON is truncated or missing quotes
+        res = {}
+        # Match "field": "value" with support for unclosed quotes at the end
+        for field in ["subject", "body"]:
+            # Robust regex to find the field and its value, even if terminal quotes are missing
+            match = re.search(f'"{field}"\s*:\s*"(.*?)(?:"|\Z)', text, re.DOTALL)
+            if match:
+                val = match.group(1).strip()
+                # If there's a trailing quote that the non-greedy match didn't catch, or if it ended early
+                res[field] = val.replace('\\n', '\n').strip()
+        
+        return res
 
 
 # ── Public API ─────────────────────────────────────────────
